@@ -1,0 +1,3 @@
+*.ipynb
+__runBMCA.py
+__Dockerfile
