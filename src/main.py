@@ -11,6 +11,8 @@ if __name__ == "__main__":
                         help="how many iterations to run")
     args = parser.parse_args()
 
+    if not args.runName:
+        args.runName='test'
     if args.iter:
         runBMCA.runBMCA(args.runName, args.iter)
     else:

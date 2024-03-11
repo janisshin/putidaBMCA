@@ -22,7 +22,8 @@ RUN pip3 install pandas==1.5.3
 RUN pip3 install pymc==4.3.0
 RUN pip3 install aesara==2.8.7
 
-RUN pip3 install cloudpickle==2.2.0
+# RUN pip3 install cloudpickle==2.2.0
+RUN pip3 install pickle5
 
 RUN pip3 install numpy==1.24
 

@@ -1,7 +1,10 @@
 import sys
 import os
 
-import cloudpickle
+os.environ['MKL_NUM_THREADS'] = '20'
+os.environ['OMP_NUM_THREADS'] = '20'
+
+import pickle5 as pickle
 
 import numpy as np
 import pandas as pd
@@ -48,7 +51,7 @@ def transcript_value_for_rxn(model, transcriptomics_df, rxn):
 #             gene_ids.append(rxn.id)
     return final_transcript_value
 
-def runBMCA(runName, N_ITERATIONS=100):
+def runBMCA(runName, N_ITERATIONS=50000):
 
     name_of_script = runName
     # import boundary-implicit, cobra-friendly version of model
@@ -177,6 +180,9 @@ def runBMCA(runName, N_ITERATIONS=100):
 
     e_labels = np.hstack((ex_labels, ey_labels))
 
+numpy_array = np.ones((10,10)) # 10x10 array
+with open('/output/my_array.pkl','wb') as f:
+    pickle.dump(numpy_array, f)
     # Setting up the PyMC model
     ll = emll.LinLogLeastNorm(N,Ex,Ey,v_star, driver = 'gelsy')
     from emll.util import initialize_elasticity
@@ -272,12 +278,13 @@ def runBMCA(runName, N_ITERATIONS=100):
     # ppc_vi['posterior_predictive']['v_hat_obs']
 
     ## PICKLE PICKLE PICKLE
-    cloudpickle.dump({'advi': advi,
-        'approx': approx,
-        'trace': trace_vi,
-        'trace_prior': trace_prior,
-        'e_labels': e_labels,
-        'r_labels': r_labels,
-        'm_labels': m_labels,
-        'll': ll}, file=open(f'{name_of_script}.pgz', "wb"))
-
+    
+    with open(f'/output/{name_of_script}.pgz','wb') as f:
+        pickle.dump({'advi': advi,
+            'approx': approx,
+            'trace': trace_vi,
+            'trace_prior': trace_prior,
+            'e_labels': e_labels,
+            'r_labels': r_labels,
+            'm_labels': m_labels,
+            'll': ll})
