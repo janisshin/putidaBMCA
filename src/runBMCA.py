@@ -287,4 +287,5 @@ with open('/output/my_array.pkl','wb') as f:
             'e_labels': e_labels,
             'r_labels': r_labels,
             'm_labels': m_labels,
+            'y_labels': y_labels,
             'll': ll})
