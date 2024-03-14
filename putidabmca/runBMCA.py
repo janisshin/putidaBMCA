@@ -4,7 +4,8 @@ import os
 os.environ['MKL_NUM_THREADS'] = '20'
 os.environ['OMP_NUM_THREADS'] = '20'
 
-import pickle5 as pickle
+# import pickle5 as pickle
+import cloudpickle as pickle
 
 import numpy as np
 import pandas as pd
@@ -18,8 +19,8 @@ import aesara.tensor as at
 aesara.config.exception_verbosity='high'
 
 import cobra
-import emll
 
+import emll
 
 ## helper functions
 def create_gprdict(model):   
@@ -53,7 +54,6 @@ def transcript_value_for_rxn(model, transcriptomics_df, rxn):
 
 def runBMCA(runName, N_ITERATIONS=50000):
 
-    name_of_script = runName
     # import boundary-implicit, cobra-friendly version of model
     cobra_model = cobra.io.read_sbml_model('data/iJN1463_JS.xml')
 
@@ -180,9 +180,16 @@ def runBMCA(runName, N_ITERATIONS=50000):
 
     e_labels = np.hstack((ex_labels, ey_labels))
 
-numpy_array = np.ones((10,10)) # 10x10 array
-with open('/output/my_array.pkl','wb') as f:
-    pickle.dump(numpy_array, f)
+
+    #################################
+        
+    numpy_array = np.ones((10,10)) # 10x10 array
+    with open('output/my_array.pgz','wb') as f:
+        pickle.dump(numpy_array, f)
+
+
+    ########################
+
     # Setting up the PyMC model
     ll = emll.LinLogLeastNorm(N,Ex,Ey,v_star, driver = 'gelsy')
     from emll.util import initialize_elasticity
@@ -193,14 +200,14 @@ with open('/output/my_array.pkl','wb') as f:
             r_compartments=r_compartments))
         Ey_t = pm.Deterministic('Ey', initialize_elasticity(-Ey.T, 'ey', b=0.05, sd=1, alpha=5))
 
-    known_e_inds = []
-    unknown_e_inds = []
-    for i, e in enumerate(rxnNames):
-        if e in e_df.columns:
-            known_e_inds.append(i)
-        else: 
-            unknown_e_inds.append(i)
-    e_inds = np.hstack([known_e_inds, unknown_e_inds]).argsort()
+        known_e_inds = []
+        unknown_e_inds = []
+        for i, e in enumerate(rxnNames):
+            if e in e_df.columns:
+                known_e_inds.append(i)
+            else: 
+                unknown_e_inds.append(i)
+        e_inds = np.hstack([known_e_inds, unknown_e_inds]).argsort()
 
     with pymc_model:
         #Protein Expression Priors
@@ -270,22 +277,27 @@ with open('/output/my_array.pkl','wb') as f:
             obj_n_mc=1)
 
     SAMPLE_DRAWS = 1000
-
+    
+    print("sampling draws")
     with pymc_model:
         trace_vi = approx.sample(draws=SAMPLE_DRAWS, random_seed=1) 
+    
+    print("sampling posterior")
+    with pymc_model:
         ppc_vi = pm.sample_posterior_predictive(trace_vi, random_seed=1)
-
+    
     # ppc_vi['posterior_predictive']['v_hat_obs']
 
     ## PICKLE PICKLE PICKLE
+    print('pickling trace')
     
-    with open(f'/output/{name_of_script}.pgz','wb') as f:
-        pickle.dump({'advi': advi,
-            'approx': approx,
-            'trace': trace_vi,
-            'trace_prior': trace_prior,
-            'e_labels': e_labels,
-            'r_labels': r_labels,
-            'm_labels': m_labels,
-            'y_labels': y_labels,
-            'll': ll})
+    #with open(f'output/{runName}.pgz','wb') as f:
+    pickle.dump({'advi': advi,
+        'approx': approx,
+        'trace': trace_vi,
+        'trace_prior': trace_prior,
+        'e_labels': e_labels,
+        'r_labels': r_labels,
+        'm_labels': m_labels,
+        'y_labels': y_labels,
+        'll': ll}, file=open(f'output/{runName}.pgz', "wb"))
