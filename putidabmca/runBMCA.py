@@ -160,13 +160,13 @@ def runBMCA(runName, N_ITERATIONS=50000):
     n_exp = v_df.shape[0]
 
     # Establish labels for metabolite and reaction names
-    # m_labels = [m.id for m in model.metabolites]
+    m_labels = [m.id for m in model.metabolites]
     r_labels = [r.id for r in model.reactions]
-    x_labels = [i.id for i in internal_mets]
+    # x_labels = [i.id for i in internal_mets]
     y_labels = [i.id for i in external_mets]
 
     ex_labels = np.array([['$\epsilon_{' + '{0},{1}'.format(rlabel, mlabel) + '}$'
-                        for mlabel in x_labels] for rlabel in r_labels]).flatten()
+                        for mlabel in m_labels] for rlabel in r_labels]).flatten()
     ey_labels = np.array([['$\epsilon_{' + '{0},{1}'.format(rlabel, mlabel) + '}$'
                         for mlabel in y_labels] for rlabel in r_labels]).flatten()
 
@@ -185,13 +185,13 @@ def runBMCA(runName, N_ITERATIONS=50000):
 
     # make copy of order of metabolites in matrices
     with open('output/order.list', 'w') as f:
-        f.write('REACTIONS\n')
+        f.write('// REACTIONS\n')
         for i, ii in enumerate(r_labels):
             f.write(str(i) + ' ' + ii + '\n')
-        f.write('\nINTERNAL METABOLITES\n')
-        for i, ii in enumerate(x_labels):
+        f.write('\n// INTERNAL METABOLITES\n')
+        for i, ii in enumerate(m_labels):
             f.write(str(i) + ' ' + ii + '\n')
-        f.write('\nEXTERNAL METABOLITES\n')
+        f.write('\n// EXTERNAL METABOLITES\n')
         for i, ii in enumerate(y_labels):
             f.write(str(i) + ' ' + ii + '\n')
 

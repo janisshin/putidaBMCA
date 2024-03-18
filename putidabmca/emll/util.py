@@ -8,11 +8,11 @@ def create_elasticity_matrix(model):
     
     internal_mets = [i for i in model.metabolites if i.compartment!='e']
 
-    n_metabolites = len(internal_mets)
+    n_metabolites = len(model.metabolites)
     n_reactions = len(model.reactions)
     array = np.zeros((n_reactions, n_metabolites), dtype=float)
 
-    # m_ind = model.metabolites.index
+    m_ind = model.metabolites.index
     r_ind = model.reactions.index
 
     for reaction in model.reactions:
