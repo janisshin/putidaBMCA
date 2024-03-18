@@ -153,42 +153,47 @@ def runBMCA(runName, N_ITERATIONS=50000):
         r_compartments[model.reactions.index(rxn)] = 't'
 
     m_compartments = [m.compartment for m in model.metabolites]
+    internal_mets = [i for i in model.metabolites if i.compartment!='e']
     external_mets = [i for i in model.metabolites if i.compartment=='e']
     rxnNames = [i.id for i in model.reactions]
     v_inds = np.arange(0,len(v_star))
     n_exp = v_df.shape[0]
 
+    # Establish labels for metabolite and reaction names
+    # m_labels = [m.id for m in model.metabolites]
+    r_labels = [r.id for r in model.reactions]
+    x_labels = [i.id for i in internal_mets]
+    y_labels = [i.id for i in external_mets]
+
+    ex_labels = np.array([['$\epsilon_{' + '{0},{1}'.format(rlabel, mlabel) + '}$'
+                        for mlabel in x_labels] for rlabel in r_labels]).flatten()
+    ey_labels = np.array([['$\epsilon_{' + '{0},{1}'.format(rlabel, mlabel) + '}$'
+                        for mlabel in y_labels] for rlabel in r_labels]).flatten()
+
+    # e_labels = np.hstack((ex_labels, ey_labels))
+
     # Set up elasticity matrices
     Ex = emll.create_elasticity_matrix(model)
-    Ey = np.zeros((623,(y_df.shape[1])))
+    Ey = np.zeros((len(model.reactions), len(external_mets)))
+
     ey_indices = {}
-    for met in y_df.columns:
+    for met in y_labels:
         ey_indices[met]=[model.reactions.index(rxn) for rxn in model.metabolites.get_by_id(met).reactions]
     for i, met in enumerate(ey_indices.keys()):
         for ii in ey_indices[met]:
             Ey[ii, i] = 1
 
-    # Establish labels for metabolite and reaction names
-    m_labels = [m.id for m in model.metabolites]
-    r_labels = [r.id for r in model.reactions]
-    y_labels = [i.id for i in external_mets]
-
-    ex_labels = np.array([['$\epsilon_{' + '{0},{1}'.format(rlabel, mlabel) + '}$'
-                        for mlabel in m_labels] for rlabel in r_labels]).flatten()
-    ey_labels = np.array([['$\epsilon_{' + '{0},{1}'.format(rlabel, mlabel) + '}$'
-                        for mlabel in y_labels] for rlabel in r_labels]).flatten()
-
-    e_labels = np.hstack((ex_labels, ey_labels))
-
-
-    #################################
-        
-    numpy_array = np.ones((10,10)) # 10x10 array
-    with open('output/my_array.pgz','wb') as f:
-        pickle.dump(numpy_array, f)
-
-
-    ########################
+    # make copy of order of metabolites in matrices
+    with open('output/order.list', 'w') as f:
+        f.write('REACTIONS\n')
+        for i, ii in enumerate(r_labels):
+            f.write(str(i) + ' ' + ii + '\n')
+        f.write('\nINTERNAL METABOLITES\n')
+        for i, ii in enumerate(x_labels):
+            f.write(str(i) + ' ' + ii + '\n')
+        f.write('\nEXTERNAL METABOLITES\n')
+        for i, ii in enumerate(y_labels):
+            f.write(str(i) + ' ' + ii + '\n')
 
     # Setting up the PyMC model
     ll = emll.LinLogLeastNorm(N,Ex,Ey,v_star, driver = 'gelsy')
@@ -296,7 +301,8 @@ def runBMCA(runName, N_ITERATIONS=50000):
         'approx': approx,
         'trace': trace_vi,
         'trace_prior': trace_prior,
-        'e_labels': e_labels,
+        'ex_labels': ex_labels,
+        'ey_labels': ey_labels,
         'r_labels': r_labels,
         'm_labels': m_labels,
         'y_labels': y_labels,
