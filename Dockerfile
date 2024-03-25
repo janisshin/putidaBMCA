@@ -30,11 +30,12 @@ RUN pip3 install numpy==1.24
 RUN apt-get update -qqy && apt-get install -qqy libopenblas-dev gfortran
 # RUN apk add --no-cache --update-cache gfortran build-base wget libpng-dev openblas-dev
 
+RUN mkdir -p /putidaBMCA
 WORKDIR /putidaBMCA
-COPY src ./src/
-COPY data ./data/
-COPY emll ./emll/
+COPY putidabmca ./putidabmca/
+#COPY data ./data/
+#COPY emll ./emll/
 
 ENV PYTHONPATH /putidaBMCA
 
-ENTRYPOINT ["python3", "src/main.py"]
+ENTRYPOINT ["python3", "/putidaBMCA/putidabmca/main.py"]
