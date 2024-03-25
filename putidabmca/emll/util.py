@@ -5,6 +5,8 @@ def create_elasticity_matrix(model):
     """Create an elasticity matrix given the model in model.
     E[j,i] represents the elasticity of reaction j for metabolite i.
     """
+    
+    internal_mets = [i for i in model.metabolites if i.compartment!='e']
 
     n_metabolites = len(model.metabolites)
     n_reactions = len(model.reactions)
@@ -18,19 +20,28 @@ def create_elasticity_matrix(model):
 
             # Reversible reaction, assign all elements to -stoich
             if reaction.reversibility:
-                array[r_ind(reaction), m_ind(metabolite)] = -np.sign(stoich)
+                try:
+                    array[r_ind(reaction), internal_mets.index(metabolite)] = -np.sign(stoich)
+                except:
+                    pass
 
             # Irrevesible in forward direction, only assign if met is reactant
             elif ((not reaction.reversibility) & 
                   (reaction.upper_bound > 0) &
                   (stoich < 0)):
-                array[r_ind(reaction), m_ind(metabolite)] = -np.sign(stoich)
+                try:
+                    array[r_ind(reaction), internal_mets.index(metabolite)] = -np.sign(stoich)
+                except:
+                    pass
 
             # Irreversible in reverse direction, only assign in met is product
             elif ((not reaction.reversibility) & 
                   (reaction.lower_bound < 0) &
                   (stoich > 0)):
-                array[r_ind(reaction), m_ind(metabolite)] = -np.sign(stoich)
+                try:
+                    array[r_ind(reaction), internal_mets.index(metabolite)] = -np.sign(stoich)
+                except:
+                    pass
 
     return array
 

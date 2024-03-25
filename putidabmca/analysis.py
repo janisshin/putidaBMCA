@@ -26,6 +26,7 @@ import pymc as pm
 
 import os
 
+
 ########################################
 
 def plot_ELBO_convergence(pickleJar, runName, iter):
@@ -75,22 +76,29 @@ def calculate_FCC_medians(pickleJar, runName):
         f.close()
 
     medians = pd.DataFrame(np.squeeze(medians), index=cc_index, columns=r_labels)
-    medians.to_csv(runName + f'_{cc_type.upper()}s_medians.csv')
+    medians.to_csv(runName + 'FCC_medians.csv')
     
 
 def save_sampled_elasticities(pickleJar, runName):
     trace = pickleJar['trace']
-    e_labels = pickleJar['e_labels']
+    ex_labels = pickleJar['ex_labels']
+    ey_labels = pickleJar['ey_labels']
 
+    e_labels = np.hstack((ex_labels, ey_labels))
+    
     Ex_hdi = az.hdi(trace['posterior']['Ex'])['Ex'].to_numpy() #(91, 80, 2)
     Ey_hdi = az.hdi(trace['posterior']['Ey'])['Ey'].to_numpy() #(91, 14, 2)
+
+    print(Ex_hdi.shape)
+    print(Ey_hdi.shape)
+
     ex = Ex_hdi.reshape((Ex_hdi.shape[0]*Ex_hdi.shape[1],-1))
     ey = Ey_hdi.reshape((Ey_hdi.shape[0]*Ey_hdi.shape[1],-1))
     e_all = np.transpose(np.vstack([ex, ey]))
     e_df_vi = pd.DataFrame(e_all, columns=e_labels)
     e_df_vi.to_csv(f'{runName}_predicted_elasticities.csv')
 
-def calculate_FCC_hdi(pickle_jar, runName, medians, cc_type='fcc', ):
+def calculate_FCC_hdi(pickle_jar, runName, medians, cc_type='fcc'):
     """
     Ex_hdi is the hdi of the posterior Ex trace as a numpy array
     """
