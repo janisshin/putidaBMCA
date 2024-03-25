@@ -7,8 +7,13 @@ import pickle5 as pickle
 import runBMCA
 #  import analysis
 
-OUTPUT_FOLDER = 'output/'
+OUTPUT_FOLDER = './output/'
 ANALYSIS_FOLDER = OUTPUT_FOLDER + 'analysis/'
+
+try:
+    os.makedirs(OUTPUT_FOLDER)
+except FileExistsError:
+    pass
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -34,18 +39,10 @@ if __name__ == "__main__":
     except FileExistsError:
     # directory already exists
         pass
-    # check if analysis folder exists
-    try:
-        os.makedirs(ANALYSIS_FOLDER)
-    except FileExistsError:
-    # directory already exists
-        pass
 
     # plot the ELBO convergence
     analysis.plot_ELBO_convergence(pickleJar, ANALYSIS_FOLDER + args.runName, args.iter)        
-    analysis.plot_ELBO_convergence(pickleJar, ANALYSIS_FOLDER + args.runName, args.iter)        
     # save csv of sampled elasticity values
-    
     analysis.save_sampled_elasticities(pickleJar, ANALYSIS_FOLDER + ANALYSIS_FOLDER + args.runName)
     # calculate the median FCC values
 """   

@@ -4,6 +4,8 @@ import os
 os.environ['MKL_NUM_THREADS'] = '20'
 os.environ['OMP_NUM_THREADS'] = '20'
 
+OUTPUT_FOLDER = './output/'
+  
 # import pickle5 as pickle
 import cloudpickle as pickle
 
@@ -55,15 +57,15 @@ def transcript_value_for_rxn(model, transcriptomics_df, rxn):
 def runBMCA(runName, N_ITERATIONS=50000):
 
     # import boundary-implicit, cobra-friendly version of model
-    cobra_model = cobra.io.read_sbml_model('data/iJN1463_JS.xml')
+    cobra_model = cobra.io.read_sbml_model('./data/iJN1463_JS.xml')
 
-    v_df = pd.read_csv("data/iJN1463_JS_eflux2_flux.csv", index_col='Unnamed: 0').transpose()
+    v_df = pd.read_csv("./data/iJN1463_JS_eflux2_flux.csv", index_col='Unnamed: 0').transpose()
 
     # remove reactions from dataset that are not in the cobra_model
     v_df = v_df[[i for i in v_df.columns if i in [ii.id for ii in cobra_model.reactions]]]
 
     # import data
-    transcriptomics_df = pd.read_csv("data/putida_RNAseq_data.csv", index_col='strains')[['genes', 'Value']]
+    transcriptomics_df = pd.read_csv("./data/putida_RNAseq_data.csv", index_col='strains')[['genes', 'Value']]
     transcriptomics_df = pd.pivot_table(transcriptomics_df, values='Value', index='genes', columns='strains').round(2)
 
     # check if reaction has a gene reaction rule
@@ -85,7 +87,7 @@ def runBMCA(runName, N_ITERATIONS=50000):
     e_df = np.log(e_df.astype('float') + ADD)
 
     # importing external metabolite concentration data
-    external_met_file = 'data/putida_ext_metabolomics_data.csv'
+    external_met_file = './data/putida_ext_metabolomics_data.csv'
     y_df = pd.read_csv(external_met_file)#.astype(float)
     y_df = y_df.set_index('Line Description')
     y_df.rename(columns={'4-Aminocinnamic acid': '4aca_e', 
@@ -142,7 +144,7 @@ def runBMCA(runName, N_ITERATIONS=50000):
     assert(len(np.where(N@v_star >1e-6)[0]) == 0)
 
     # Load the Cobra version of the model
-    model = cobra.io.read_sbml_model('data/iJN1463_JS.xml') 
+    model = cobra.io.read_sbml_model('./data/iJN1463_JS.xml') 
     model.tolerance = 1e-9
 
     # Set up the Bayesian inference
@@ -184,7 +186,7 @@ def runBMCA(runName, N_ITERATIONS=50000):
             Ey[ii, i] = 1
 
     # make copy of order of metabolites in matrices
-    with open('output/order.list', 'w') as f:
+    with open('{OUTPUT_FOLDER}order.list', 'w') as f:
         f.write('// REACTIONS\n')
         for i, ii in enumerate(r_labels):
             f.write(str(i) + ' ' + ii + '\n')
@@ -296,16 +298,14 @@ def runBMCA(runName, N_ITERATIONS=50000):
     ## PICKLE PICKLE PICKLE
     print('pickling trace')
     
-    #with open(f'output/{runName}.pgz','wb') as f:
+    #with open(f'./output/{runName}.pgz','wb') as f:
     pickle.dump({'advi': advi,
         'approx': approx,
         'trace': trace_vi,
         'trace_prior': trace_prior,
         'ex_labels': ex_labels,
         'ey_labels': ey_labels,
-        'ex_labels': ex_labels,
-        'ey_labels': ey_labels,
         'r_labels': r_labels,
         'm_labels': m_labels,
         'y_labels': y_labels,
-        'll': ll}, file=open(f'output/{runName}.pgz', "wb"))
+        'll': ll}, file=open(f'{OUTPUT_FOLDER}{runName}.pgz', "wb"))
