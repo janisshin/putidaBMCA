@@ -166,7 +166,7 @@ def runBMCA(runName, N_ITERATIONS=50000):
     y_labels = [i.id for i in external_mets]
 
     ex_labels = np.array([['$\epsilon_{' + '{0},{1}'.format(rlabel, mlabel) + '}$'
-                        for mlabel in m_labels] for rlabel in r_labels]).flatten()
+                        for mlabel in m_labels if mlabel not in y_labels] for rlabel in r_labels]).flatten()
     ey_labels = np.array([['$\epsilon_{' + '{0},{1}'.format(rlabel, mlabel) + '}$'
                         for mlabel in y_labels] for rlabel in r_labels]).flatten()
 
@@ -301,6 +301,8 @@ def runBMCA(runName, N_ITERATIONS=50000):
         'approx': approx,
         'trace': trace_vi,
         'trace_prior': trace_prior,
+        'ex_labels': ex_labels,
+        'ey_labels': ey_labels,
         'ex_labels': ex_labels,
         'ey_labels': ey_labels,
         'r_labels': r_labels,

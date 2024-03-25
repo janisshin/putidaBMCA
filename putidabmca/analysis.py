@@ -11,12 +11,10 @@ import scipy
 import scipy.stats
 
 import cobra
-from tqdm import tqdm
+
 
 import matplotlib.pyplot as plt
 import seaborn as sns
-sns.set(context='talk', style='ticks',
-        color_codes=True, rc={'legend.frameon': False})
 import arviz as az
 
 from csv import writer
@@ -25,6 +23,7 @@ import emll
 import pymc as pm
 
 import os
+
 
 
 ########################################
@@ -84,10 +83,19 @@ def save_sampled_elasticities(pickleJar, runName):
     ex_labels = pickleJar['ex_labels']
     ey_labels = pickleJar['ey_labels']
 
+    print(ex_labels.shape)
+    print(ey_labels.shape)
+
+    e_labels = np.hstack((ex_labels, ey_labels))
+    
     e_labels = np.hstack((ex_labels, ey_labels))
     
     Ex_hdi = az.hdi(trace['posterior']['Ex'])['Ex'].to_numpy() #(91, 80, 2)
     Ey_hdi = az.hdi(trace['posterior']['Ey'])['Ey'].to_numpy() #(91, 14, 2)
+
+    print(Ex_hdi.shape)
+    print(Ey_hdi.shape)
+
 
     print(Ex_hdi.shape)
     print(Ey_hdi.shape)

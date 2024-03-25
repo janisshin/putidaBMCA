@@ -2,3 +2,7 @@
 __runBMCA.py
 __Dockerfile
 *.sbatch
+**/*.pgz
+**/*.svg
+
+**/analysis.py

@@ -15,7 +15,10 @@
 module load apptainer
 
 #Your job commands go here
-apptainer exec docker://janisshin/putida-bmca --runName test --iter 100
+apptainer build putida-bmca.sif docker://janisshin/putidabmca
+srun apptainer run --bind /gscratch/cheme/jshin1/repos /gscratch/cheme/jshin1/putida-bmca.sif 
+srun apptainer run /gscratch/cheme/jshin1/putida-bmca.sif 
+# apptainer exec  "--runName test" "--iter 100"
 
 #Optionally, you can include cleanup commands here (e.g., after the job finishes)
 #For example:
