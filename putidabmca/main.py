@@ -29,22 +29,3 @@ if __name__ == "__main__":
         runBMCA.runBMCA(args.runName, args.iter)
     else:
         runBMCA.runBMCA(args.runName)
-"""
-    with open('output/' + args.runName + '.pgz', "rb") as f:
-        pickleJar = pickle.load(f)
-    
-    # check if analysis folder exists
-    try:
-        os.makedirs(ANALYSIS_FOLDER)
-    except FileExistsError:
-    # directory already exists
-        pass
-
-    # plot the ELBO convergence
-    analysis.plot_ELBO_convergence(pickleJar, ANALYSIS_FOLDER + args.runName, args.iter)        
-    # save csv of sampled elasticity values
-    analysis.save_sampled_elasticities(pickleJar, ANALYSIS_FOLDER + ANALYSIS_FOLDER + args.runName)
-    # calculate the median FCC values
-"""   
-
-    
