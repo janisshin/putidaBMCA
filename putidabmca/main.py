@@ -7,7 +7,7 @@ import pickle5 as pickle
 import runBMCA
 #  import analysis
 
-OUTPUT_FOLDER = './output/'
+OUTPUT_FOLDER = '/putidabmca/output/'
 ANALYSIS_FOLDER = OUTPUT_FOLDER + 'analysis/'
 
 try:
