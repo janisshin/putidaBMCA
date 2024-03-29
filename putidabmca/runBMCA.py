@@ -186,7 +186,7 @@ def runBMCA(runName, N_ITERATIONS=50000):
             Ey[ii, i] = 1
 
     # make copy of order of metabolites in matrices
-    with open('{OUTPUT_FOLDER}order.list', 'w') as f:
+    with open(f'{OUTPUT_FOLDER}order.list', 'w') as f:
         f.write('// REACTIONS\n')
         for i, ii in enumerate(r_labels):
             f.write(str(i) + ' ' + ii + '\n')
