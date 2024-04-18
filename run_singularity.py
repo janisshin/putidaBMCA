@@ -2,6 +2,18 @@
 """
 Singularity launch script for putida bmca Singularity image.
 To be run on hyak command line
+
+To install absl on hyak,
+First, activate your virtual env that has python
+
+(conda activate sing)
+
+Then, 
+
+python -m pip install --user absl-py==1.0.0
+python -m pip install --user spython==0.3.0
+
+
 """
 
 import os
@@ -21,7 +33,7 @@ import subprocess
 # Path to Singularity image. This relies on
 # the environment variable ALPHAFOLD_DIR which is the
 # directory where AlphaFold is installed.
-singularity_image = Client.load('/gscratch/cheme/jshin1/putidabmca.sif')
+singularity_image = Client.load('/gscratch/cheme/jshin1/putidabmca/putidabmca.sif')
 
 # tmp directory
 if 'TMP' in os.environ:
@@ -29,6 +41,11 @@ if 'TMP' in os.environ:
 elif 'TMPDIR' in os.environ:
     tmp_dir = os.environ['TMPDIR']
 else:
+    # make a temp directory and set
+    try:
+        os.makedirs('tmp')
+    except FileExistsError:
+        pass
     tmp_dir = './tmp'
 
 # Default path to a directory that will store the results.
@@ -38,14 +55,16 @@ logging.info(f'INFO: tmp_dir = {tmp_dir}')
 logging.info(f'INFO: output_dir_default = {output_dir_default}')
 
 #### END USER CONFIGURATION ####
+
+
 flags.DEFINE_string(
     'output_dir', output_dir_default,
     'Path to a directory that will store the results.')
 flags.DEFINE_string(
-    'run_name', None,
+    'run_name', 'test',
     'Name of the resulting pickle file.')
 flags.DEFINE_integer(
-    'iter', None,
+    'iter', '45000',
     'Number of iterations for the PyMC ADVI fitting ')
 
 FLAGS = flags.FLAGS
@@ -69,8 +88,8 @@ def main(argv):
 
   command_args.extend([
       f'--output_dir={output_target_path}',
-      f'--runName={FLAGS.max_template_date}', ## flag or user input?
-      f'--iter={FLAGS.max_template_date}', ## flag or user input?
+      #f'--runName={FLAGS.max_template_date}', ## flag or user input?
+      #f'--iter={FLAGS.max_template_date}', ## flag or user input?
       '--logtostderr',
   ])
 
