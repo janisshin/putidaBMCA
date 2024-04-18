@@ -32,8 +32,9 @@ RUN apt-get update -qqy && apt-get install -qqy libopenblas-dev gfortran
 
 RUN mkdir -p /putidabmca
 WORKDIR /putidabmca
-COPY putidabmca ./
+COPY ./putidabmca ./
+# RUN mkdir /putidabmca/output
 
-ENV PYTHONPATH /putidaBMCA
+ENV PYTHONPATH /putidabmca
 
-ENTRYPOINT ["python3", "/putidabmca/main.py"]
+ENTRYPOINT ["python3", "/putidabmca/run_singularity.py"]
