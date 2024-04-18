@@ -4,7 +4,7 @@ import os
 os.environ['MKL_NUM_THREADS'] = '20'
 os.environ['OMP_NUM_THREADS'] = '20'
 
-OUTPUT_FOLDER = '/putidabmca/output/'
+OUTPUT_FOLDER = 'putidabmca/mnt/'
   
 # import pickle5 as pickle
 import cloudpickle as pickle

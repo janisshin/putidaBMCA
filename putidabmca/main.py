@@ -7,12 +7,14 @@ import pickle5 as pickle
 import runBMCA
 #  import analysis
 
-OUTPUT_FOLDER = '/putidabmca/output/'
+OUTPUT_FOLDER = '/mnt/output/'
 ANALYSIS_FOLDER = OUTPUT_FOLDER + 'analysis/'
 
 try:
     os.makedirs(OUTPUT_FOLDER)
+    print('folder was made')
 except FileExistsError:
+    print('file exists')
     pass
 
 if __name__ == "__main__":

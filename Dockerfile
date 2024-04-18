@@ -37,4 +37,4 @@ COPY ./putidabmca ./
 
 ENV PYTHONPATH /putidabmca
 
-ENTRYPOINT ["python3", "/putidabmca/run_singularity.py"]
+ENTRYPOINT ["python3", "/putidabmca/main.py"]
