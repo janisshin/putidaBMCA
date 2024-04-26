@@ -4,7 +4,7 @@ import os
 # should we use cloudpickle instead?
 # import pickle5 as pickle 
 
-import runBMCA
+import src.putidabmca.runBMCA as runBMCA
 #  import analysis
 
 OUTPUT_FOLDER = 'output'
