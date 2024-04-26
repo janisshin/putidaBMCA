@@ -1,0 +1,20 @@
+# the purpose of this file is to recreate this env in an ubuntu env and avoid
+# MS's problems with pickling.
+# after creating an env with this file, run the following command in the terminal
+# with the env open to finish creating the env. 
+# sudo apt-get install libblas-dev
+
+name: new_Gayles
+channels:
+  - defaults
+dependencies:
+  - python=3.9.13
+  - pip:
+    -cobra==0.29.0
+    -arviz==0.13.0
+    -scipy==1.9.3
+    -pandas==1.5.3 
+    -pickle5
+    -numpy==1.24
+    -pymc
+    -pytensor
