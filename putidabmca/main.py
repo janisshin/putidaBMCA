@@ -2,12 +2,12 @@ import argparse
 import os
 
 # should we use cloudpickle instead?
-# import pickle5 as pickle 
+import pickle5 as pickle 
 
-import src.putidabmca.runBMCA as runBMCA
+import runBMCA
 #  import analysis
 
-OUTPUT_FOLDER = 'output'
+OUTPUT_FOLDER = '/mnt/output/'
 ANALYSIS_FOLDER = OUTPUT_FOLDER + 'analysis/'
 
 try:
