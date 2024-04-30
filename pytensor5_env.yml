@@ -1,10 +1,17 @@
 # the purpose of this file is to recreate this env in an ubuntu env and avoid
 # MS's problems with pickling.
+
 # after creating an env with this file, run the following command in the terminal
 # with the env open to finish creating the env. 
 # sudo apt-get install libblas-dev
 
-name: new_Gayles
+# if using CentOS, run
+# sudo yum install epel-release
+# sudo yum config-manager --set-enabled powertools
+# sudo yum install blas-devel
+
+
+name: pytensor5
 channels:
   - defaults
 dependencies:
