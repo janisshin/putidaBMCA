@@ -2,7 +2,8 @@ import argparse
 import os
 
 import runBMCA
-#  import analysis
+from datetime import datetime
+startTime = datetime.now()
 
 OUTPUT_FOLDER = 'output/'
 ANALYSIS_FOLDER = OUTPUT_FOLDER + 'analysis/'
@@ -28,3 +29,6 @@ if __name__ == "__main__":
         runBMCA.runBMCA(args.runName, args.iter)
     else:
         runBMCA.runBMCA(args.runName)
+
+with open('elapsed_time.txt', 'w') as f:
+    f.write(str(datetime.now() - startTime))
