@@ -309,3 +309,22 @@ def runBMCA(runName, N_ITERATIONS=50000):
         'm_labels': m_labels,
         'y_labels': y_labels,
         'll': ll}, file=open(f'{OUTPUT_FOLDER}{runName}.pgz', "wb"))
+    return f'{OUTPUT_FOLDER}{runName}'
+
+def resumeBMCA(pickle_file, n_iter, chunk):
+    with open(pickle_file, "rb") as p:
+        jar = pickle.load(p)
+
+    approx = jar['advi'].fit(
+        n=n_iter, 
+        obj_optimizer=pm.adagrad_window(learning_rate=5E-3), 
+        total_grad_norm_constraint=0.7,
+        obj_n_mc=1)
+    
+    pickle_chunk = pickle_file.split('.')[0].split('_')[0] + '_' + str(chunk)
+
+    pickle.dump({
+        'advi': jar['advi']}, file=open(f'{pickle_chunk}.pgz', "wb"))
+    return pickle_chunk
+
+

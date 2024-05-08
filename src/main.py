@@ -21,12 +21,17 @@ if __name__ == "__main__":
                         help="output as a pickle file")
     parser.add_argument("--iter", metavar="N", type=int, default=50000,
                         help="how many iterations to run")
+    parser.add_argument("--chunk", metavar="ch", type=int, default=1,
+                        help="how many iterations to run")
     args = parser.parse_args()
     
     if not args.runName:
         args.runName='test'
-    if args.iter:
-        runBMCA.runBMCA(args.runName, args.iter)
+    if args.chunk != 1:
+        firstPickle = runBMCA.runBMCA(args.runName, args.iter/args.chunk)
+        resumePickle = firstPickle
+        for i in range(args.chunk-1):
+            resumePickle = runBMCA.resumeBMCA(resumePickle, i)
     else:
         runBMCA.runBMCA(args.runName)
 
