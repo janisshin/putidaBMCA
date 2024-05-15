@@ -309,7 +309,7 @@ def runBMCA(runName, N_ITERATIONS=50000):
         'm_labels': m_labels,
         'y_labels': y_labels,
         'll': ll}, file=open(f'{OUTPUT_FOLDER}{runName}.pgz', "wb"))
-    return f'{OUTPUT_FOLDER}{runName}'
+    return f'{OUTPUT_FOLDER}{runName}.pgz'
 
 def resumeBMCA(pickle_file, n_iter, chunk):
     with open(pickle_file, "rb") as p:
