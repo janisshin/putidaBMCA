@@ -20,11 +20,8 @@ import arviz as az
 from csv import writer
 import emll
 
-import pymc as pm
-
-import os
-
-
+#import pymc as pm
+# import os
 
 ########################################
 
@@ -185,3 +182,11 @@ def plot_FCC_distrb(cc_df, cc_type, results_dir, dataset_name):
     plt.suptitle(dataset_name + f' Predicted {cc_type.upper()}s: 4ACA', y=1)
 
     fig.savefig(results_dir + f'{dataset_name}-plotted_{cc_type}s.svg', transparent=True)
+
+
+def print_predicted_Ex_values(pickleJar, output_path):
+    t = np.squeeze(pickleJar['trace']['posterior']['Ex'].to_numpy())
+    dim=t.shape
+    traceDF = pd.DataFrame(t.reshape(dim[0]*dim[1], dim[2])) 
+    traceDF.to_csv(f'{output_path}_PredictedExs.csv')
+
