@@ -1,0 +1,108 @@
+WARNING (aesara.tensor.blas): Using NumPy C-API based implementation for BLAS functions.
+file exists
+Traceback (most recent call last):
+  File "/gscratch/stf/jshin1/miniconda3/envs/new_Gayles/lib/python3.9/site-packages/aesara/link/vm.py", line 1246, in make_all
+    node.op.make_thunk(node, storage_map, compute_map, [], impl=impl)
+  File "/gscratch/stf/jshin1/miniconda3/envs/new_Gayles/lib/python3.9/site-packages/aesara/link/c/op.py", line 131, in make_thunk
+    return self.make_c_thunk(node, storage_map, compute_map, no_recycling)
+  File "/gscratch/stf/jshin1/miniconda3/envs/new_Gayles/lib/python3.9/site-packages/aesara/link/c/op.py", line 96, in make_c_thunk
+    outputs = cl.make_thunk(
+  File "/gscratch/stf/jshin1/miniconda3/envs/new_Gayles/lib/python3.9/site-packages/aesara/link/c/basic.py", line 1202, in make_thunk
+    cthunk, module, in_storage, out_storage, error_storage = self.__compile__(
+  File "/gscratch/stf/jshin1/miniconda3/envs/new_Gayles/lib/python3.9/site-packages/aesara/link/c/basic.py", line 1122, in __compile__
+    thunk, module = self.cthunk_factory(
+  File "/gscratch/stf/jshin1/miniconda3/envs/new_Gayles/lib/python3.9/site-packages/aesara/link/c/basic.py", line 1647, in cthunk_factory
+    module = cache.module_from_key(key=key, lnk=self)
+  File "/gscratch/stf/jshin1/miniconda3/envs/new_Gayles/lib/python3.9/site-packages/aesara/link/c/cmodule.py", line 1229, in module_from_key
+    module = lnk.compile_cmodule(location)
+  File "/gscratch/stf/jshin1/miniconda3/envs/new_Gayles/lib/python3.9/site-packages/aesara/link/c/basic.py", line 1546, in compile_cmodule
+    module = c_compiler.compile_str(
+  File "/gscratch/stf/jshin1/miniconda3/envs/new_Gayles/lib/python3.9/site-packages/aesara/link/c/cmodule.py", line 2652, in compile_str
+    return dlimport(lib_filename)
+  File "/gscratch/stf/jshin1/miniconda3/envs/new_Gayles/lib/python3.9/site-packages/aesara/link/c/cmodule.py", line 332, in dlimport
+    rval = __import__(module_name, {}, {}, [module_name])
+ImportError: /mmfs1/home/jshin1/.aesara/compiledir_Linux-4.18-el8_9.x86_64-x86_64-with-glibc2.28-x86_64-3.9.19-64/tmpp19yr9fn/m372a160cb53b67f775122060a85ff6d78334b95c948432b8c47e180c95c52d9d.so: undefined symbol: dgemm_
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/mmfs1/gscratch/cheme/jshin1/putidabmca/main.py", line 31, in <module>
+    runBMCA.runBMCA(args.runName, args.iter)
+  File "/mmfs1/gscratch/cheme/jshin1/putidabmca/runBMCA.py", line 260, in runBMCA
+    trace_prior = pm.sample_prior_predictive(samples=1000, random_seed=RANDOM_SEED)
+  File "/gscratch/stf/jshin1/miniconda3/envs/new_Gayles/lib/python3.9/site-packages/pymc/sampling.py", line 2158, in sample_prior_predictive
+    sampler_fn, volatile_basic_rvs = compile_forward_sampling_function(
+  File "/gscratch/stf/jshin1/miniconda3/envs/new_Gayles/lib/python3.9/site-packages/pymc/sampling.py", line 1777, in compile_forward_sampling_function
+    compile_pymc(inputs, fg.outputs, givens=givens, on_unused_input="ignore", **kwargs),
+  File "/gscratch/stf/jshin1/miniconda3/envs/new_Gayles/lib/python3.9/site-packages/pymc/aesaraf.py", line 970, in compile_pymc
+    aesara_function = aesara.function(
+  File "/gscratch/stf/jshin1/miniconda3/envs/new_Gayles/lib/python3.9/site-packages/aesara/compile/function/__init__.py", line 317, in function
+    fn = pfunc(
+  File "/gscratch/stf/jshin1/miniconda3/envs/new_Gayles/lib/python3.9/site-packages/aesara/compile/function/pfunc.py", line 371, in pfunc
+    return orig_function(
+  File "/gscratch/stf/jshin1/miniconda3/envs/new_Gayles/lib/python3.9/site-packages/aesara/compile/function/types.py", line 1759, in orig_function
+    fn = m.create(defaults)
+  File "/gscratch/stf/jshin1/miniconda3/envs/new_Gayles/lib/python3.9/site-packages/aesara/compile/function/types.py", line 1652, in create
+    _fn, _i, _o = self.linker.make_thunk(
+  File "/gscratch/stf/jshin1/miniconda3/envs/new_Gayles/lib/python3.9/site-packages/aesara/link/basic.py", line 254, in make_thunk
+    return self.make_all(
+  File "/gscratch/stf/jshin1/miniconda3/envs/new_Gayles/lib/python3.9/site-packages/aesara/link/vm.py", line 1255, in make_all
+    raise_with_op(fgraph, node)
+  File "/gscratch/stf/jshin1/miniconda3/envs/new_Gayles/lib/python3.9/site-packages/aesara/link/utils.py", line 534, in raise_with_op
+    raise exc_value.with_traceback(exc_trace)
+  File "/gscratch/stf/jshin1/miniconda3/envs/new_Gayles/lib/python3.9/site-packages/aesara/link/vm.py", line 1246, in make_all
+    node.op.make_thunk(node, storage_map, compute_map, [], impl=impl)
+  File "/gscratch/stf/jshin1/miniconda3/envs/new_Gayles/lib/python3.9/site-packages/aesara/link/c/op.py", line 131, in make_thunk
+    return self.make_c_thunk(node, storage_map, compute_map, no_recycling)
+  File "/gscratch/stf/jshin1/miniconda3/envs/new_Gayles/lib/python3.9/site-packages/aesara/link/c/op.py", line 96, in make_c_thunk
+    outputs = cl.make_thunk(
+  File "/gscratch/stf/jshin1/miniconda3/envs/new_Gayles/lib/python3.9/site-packages/aesara/link/c/basic.py", line 1202, in make_thunk
+    cthunk, module, in_storage, out_storage, error_storage = self.__compile__(
+  File "/gscratch/stf/jshin1/miniconda3/envs/new_Gayles/lib/python3.9/site-packages/aesara/link/c/basic.py", line 1122, in __compile__
+    thunk, module = self.cthunk_factory(
+  File "/gscratch/stf/jshin1/miniconda3/envs/new_Gayles/lib/python3.9/site-packages/aesara/link/c/basic.py", line 1647, in cthunk_factory
+    module = cache.module_from_key(key=key, lnk=self)
+  File "/gscratch/stf/jshin1/miniconda3/envs/new_Gayles/lib/python3.9/site-packages/aesara/link/c/cmodule.py", line 1229, in module_from_key
+    module = lnk.compile_cmodule(location)
+  File "/gscratch/stf/jshin1/miniconda3/envs/new_Gayles/lib/python3.9/site-packages/aesara/link/c/basic.py", line 1546, in compile_cmodule
+    module = c_compiler.compile_str(
+  File "/gscratch/stf/jshin1/miniconda3/envs/new_Gayles/lib/python3.9/site-packages/aesara/link/c/cmodule.py", line 2652, in compile_str
+    return dlimport(lib_filename)
+  File "/gscratch/stf/jshin1/miniconda3/envs/new_Gayles/lib/python3.9/site-packages/aesara/link/c/cmodule.py", line 332, in dlimport
+    rval = __import__(module_name, {}, {}, [module_name])
+ImportError: /mmfs1/home/jshin1/.aesara/compiledir_Linux-4.18-el8_9.x86_64-x86_64-with-glibc2.28-x86_64-3.9.19-64/tmpp19yr9fn/m372a160cb53b67f775122060a85ff6d78334b95c948432b8c47e180c95c52d9d.so: undefined symbol: dgemm_
+Apply node that caused the error: BatchedDot(TensorConstant{[[[0. 0. 0... 0. 0.]]]}, Elemwise{mul,no_inplace}.0)
+Toposort index: 27
+Inputs types: [TensorType(float64, (41, 530, 623)), TensorType(float64, (None, 623, 623))]
+
+Backtrace when the node is created (use Aesara flag traceback__limit=N to make it longer):
+  File "/mmfs1/gscratch/cheme/jshin1/putidabmca/main.py", line 31, in <module>
+    runBMCA.runBMCA(args.runName, args.iter)
+  File "/mmfs1/gscratch/cheme/jshin1/putidabmca/runBMCA.py", line 246, in runBMCA
+    y_ss, vn_ss = ll.steady_state_aesara(Ey_t, Ex_t, en_t, xn_t.T, n_exp=n_exp)
+  File "/mmfs1/gscratch/cheme/jshin1/putidabmca/emll/linlog_model.py", line 149, in steady_state_aesara
+    N_hat = T.batched_dot(N_rep, e_diag)
+
+Debug print of the apply node:
+BatchedDot [id A] <TensorType(float64, (None, None, None))>
+ |TensorConstant{[[[0. 0. 0... 0. 0.]]]} [id B] <TensorType(float64, (41, 530, 623))>
+ |Elemwise{mul,no_inplace} [id C] <TensorType(float64, (None, 623, 623))>
+   |InplaceDimShuffle{1,0,x} [id D] <TensorType(float64, (None, None, 1))>
+   | |AdvancedSubtensor1 [id E] <TensorType(float64, (None, None))>
+   |   |InplaceDimShuffle{1,0} [id F] <TensorType(float64, (None, None))>
+   |   | |Join [id G] <TensorType(float64, (None, None))>
+   |   |   |TensorConstant{1} [id H] <TensorType(int8, ())>
+   |   |   |normal_rv{0, (0, 0), floatX, True}.1 [id I] <TensorType(float64, (None, None))> 'e_measured'
+   |   |   |laplace_rv{0, (0, 0), floatX, True}.1 [id J] <TensorType(float64, (None, None))> 'e_unmeasured'
+   |   |TensorConstant{[  0 526 5..5 621 622]} [id K] <TensorType(uint16, (623,))>
+   |TensorConstant{[[[1.04192..000e-05]]]} [id L] <TensorType(float64, (1, 623, 623))>
+
+HINT: Use a linker other than the C linker to print the inputs' shapes and strides.
+HINT: Use the Aesara flag `exception_verbosity=high` for a debug print-out and storage map footprint of this Apply node.
+
+
+
+
+
+
+

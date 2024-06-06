@@ -15,5 +15,6 @@
 module load apptainer
 
 #Your job commands go here
-apptainer build --force putida-bmca3.sif docker://janisshin/putida-bmca
-srun apptainer run --bind /gscratch/cheme/jshin1/putidabmca /gscratch/cheme/jshin1/putidabmca/putida-bmca3.sif "--runName" "test" "--iter" "5"
+# apptainer build --force /gscratch/cheme/jshin1/putidabmca/putida-bmca.sif docker://janisshin/putidabmca:latest
+
+srun apptainer run --bind /gscratch/cheme/jshin1/putidabmca:/putidabmca /gscratch/cheme/jshin1/putidabmca/putida-bmca.sif "--runName" "test" "--iter" "40000"

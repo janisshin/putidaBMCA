@@ -10,9 +10,7 @@ RUN apt-get update && \
     add-apt-repository ppa:deadsnakes/ppa && \
     apt-get update && \ 
     apt-get install -yf python3.9 python3.9-dev python3-pip 
-    # && \
-    # ln -sf /usr/bin/python3.9 /usr/bin/python3 && \
-    # python3 --version
+
 
 RUN pip3 install cobra==0.29.0
 RUN pip3 install arviz==0.13.0
@@ -30,10 +28,10 @@ RUN pip3 install numpy==1.24
 RUN apt-get update -qqy && apt-get install -qqy libopenblas-dev gfortran
 # RUN apk add --no-cache --update-cache gfortran build-base wget libpng-dev openblas-dev
 
+
 RUN mkdir -p /putidabmca
 WORKDIR /putidabmca
-COPY ./putidabmca ./
-# RUN mkdir /putidabmca/output
+COPY --chmod=777 putidabmca ./
 
 ENV PYTHONPATH /putidabmca
 
