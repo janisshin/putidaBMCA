@@ -301,7 +301,7 @@ def runBMCA(runName, N_ITERATIONS=50000):
     #with open(f'/putidabmca/output/{runName}.pgz','wb') as f:
     pickle.dump({'advi': advi,
         'approx': approx,
-        'trace': trace_vi,
+        'trace': trace_vi, # may not be necessary; can be done in analysis
         'trace_prior': trace_prior,
         'ex_labels': ex_labels,
         'ey_labels': ey_labels,
@@ -312,7 +312,7 @@ def runBMCA(runName, N_ITERATIONS=50000):
     return f'{OUTPUT_FOLDER}{runName}'
 
 def resumeBMCA(pickle_file, n_iter, chunk):
-    with open(pickle_file, "rb") as p:
+    with open(f'{pickle_file}.pgz', "rb") as p:
         jar = pickle.load(p)
 
     approx = jar['advi'].fit(
@@ -324,7 +324,9 @@ def resumeBMCA(pickle_file, n_iter, chunk):
     pickle_chunk = pickle_file.split('.')[0].split('_')[0] + '_' + str(chunk)
 
     pickle.dump({
-        'advi': jar['advi']}, file=open(f'{pickle_chunk}.pgz', "wb"))
+        'advi': jar['advi'],
+        'approx': approx
+        }, file=open(f'{pickle_chunk}.pgz', "wb"))
     return pickle_chunk
 
 
