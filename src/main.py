@@ -28,10 +28,10 @@ if __name__ == "__main__":
     if not args.runName:
         args.runName='test'
     if args.chunk != 1:
-        firstPickle = runBMCA.runBMCA(args.runName, args.iter/args.chunk)
+        firstPickle = runBMCA.runBMCA(args.runName, int(args.iter/args.chunk))
         resumePickle = firstPickle
         for i in range(args.chunk-1):
-            resumePickle = runBMCA.resumeBMCA(resumePickle, i)
+            resumePickle = runBMCA.resumeBMCA(resumePickle, 2000, i)
     else:
         runBMCA.runBMCA(args.runName)
 
